@@ -1,37 +1,79 @@
-## Welcome to GitHub Pages
+# README #
+## Source structure
 
-You can use the [editor on GitHub](https://github.com/smartbiz/HelpdeskBot/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
 ```
+├── app
+│   ├── handlers
+│   │   └── fileanissue.js
+│   └── models
+│       ├── columne.model.js
+│       ├── label.model.js
+│       ├── milestone.model.js
+│       └── project.model.js
+├── assets
+│   ├── json
+│   │   └── github_organization.json
+│   └── it-helpdesk-structure.xlsx
+├── config
+│   ├── .env
+│   ├── constants.js
+│   ├── index.js
+│   └── mongodb.js
+├── package.json
+├── README.md
+```
+## Setup
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+- Start MongoDB
+```
+$ sudo service mongod start
+```
+- Run node server to create github structure from json
+```
+$ node createGitHubStructure.js
+```
+- After structure already has created, stop node server
 
-### Jekyll Themes
+- Run node server
+```
+$ node index.js
+```
+## Service Desk Bot Flow
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/smartbiz/HelpdeskBot/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### 1. Create issue on Workplace
 
-### Support or Contact
+- Pattern to create a issue on workplace
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+```
+@Bot_name Title_of_Issue#Assignee#Priority#Type_of_Issue
+```
+- Priority such as: High, Low, Medium
+- Type of issue such as: Access/Login, Desktop/Laptop/Hardware, Internet/Intranet ...
+
+Example: @ServiceDeskBot Can't Login Desktop#smartbiz#High#Access/Login
+
+![](/assets/images/create-issue-workplace.png)
+
+- Workplace will post a message if create a issue is success
+
+![](/assets/images/create-issue-success.png)
+
+
+### 2. Handle issue on github
+- Click on issue's link on workplace to see detail on github as below
+
+![](/assets/images/issue-github.png)
+
+- Issues are organized as dashboard below
+
+![](/assets/images/dashboard-github.png)
+
+- After close a issue, this issue will auto move to Close column on dashboard
+
+![](/assets/images/close-issue.png)
+![](/assets/images/dashboard-move.png)
+
+### 3. Workplace notify the issue is close
+- Workplace will notify as below
+
+![](/assets/images/workplace-notify.png)
